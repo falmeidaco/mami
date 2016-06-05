@@ -25,9 +25,8 @@ int[][] mapa_moldura = {{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                         { 0,13,12,11,11,11,11,11,11,11,11,11,11,10, 9, 0},
                         { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
 
-
 //Imagens para mamipulação
-PImage imagens[], imagem, imagem_aux, imagem_final;
+PImage imagens[], imagem_aux1, imagem_aux2, imagem_final;
 int imagem_index = 0;
 
 //Variáveis para controle de pixels
@@ -53,7 +52,7 @@ void setup () {
   }
   
   imagens = new PImage[6];
-  //Carrega imagem para manipulação de pixels
+  //Carrega imagens para manipulação de pixels
   imagens[0] = loadImage("imagens/imagem1.jpg");
   imagens[1] = loadImage("imagens/imagem2.jpg");
   imagens[2] = loadImage("imagens/imagem3.jpg");
@@ -61,8 +60,10 @@ void setup () {
   imagens[4] = loadImage("imagens/imagem5.jpg");
   imagens[5] = loadImage("imagens/imagem6.jpg");
   
-  //Cria uma nova imagem auxiliar em preto e branco
-  imagem_aux = createImage(560, 400, RGB);
+  //Cria uma nova imagem auxiliar para aplicar o ruido
+  imagem_aux1 = createImage(560, 400, RGB);
+  //Cria uma nova imagem auxiliar para aplicar a escala de cinza
+  imagem_aux2 = createImage(560, 400, RGB);
   //Cria uma nova imagem como o resultado da manipulação dos pixels
   imagem_final = createImage(560, 400, RGB);
   
@@ -114,6 +115,11 @@ void draw() {
   
   //Exibe moldura
   mostraMoldura(0, 0, 16, 12, 640, 480, mapa_moldura, moldura);
+  
+  textSize(10);
+  fill(0);
+  text("Imagem " + (imagem_index + 1) + ". Fonte: https://www.bostonglobe.com/news/bigpicture", 40, 460);
+  
 }
 
 //Evento para mudar de imagem
@@ -148,7 +154,8 @@ void _verde(float value) {
 
 void modificaPixelsImagem() {
   imagens[imagem_index].loadPixels();
-  imagem_aux.loadPixels();
+  imagem_aux1.loadPixels();
+  imagem_aux2.loadPixels();
   imagem_final.loadPixels();
   //Scanline para percorrer pixels da imagem
   for (y = 0; y < 400; y += 1) {
@@ -161,30 +168,23 @@ void modificaPixelsImagem() {
       b = blue(imagens[imagem_index].pixels[pos]);
       
       //Adiciona ruido à nova imagem
-      imagem_aux.pixels[pos] = color(r+ random(100 * _ruido) , g + random(100 * _ruido), b + random(100 * _ruido));
+      imagem_aux1.pixels[pos] = color(r + random(100 * _ruido), g + random(100 * _ruido), b + random(100 * _ruido));
       
       //Carrega imagem auxiliar com escala de cinza
-      r = red(imagem_aux.pixels[pos]);
-      g = green(imagem_aux.pixels[pos]);
-      b = blue(imagem_aux.pixels[pos]);
+      r = red(imagem_aux1.pixels[pos]);
+      g = green(imagem_aux1.pixels[pos]);
+      b = blue(imagem_aux1.pixels[pos]);
       media_pb = 0.3 * r + 0.59 * g + 0.11 * b;
-      imagem_aux.pixels[pos] = color(media_pb);
+      imagem_aux2.pixels[pos] = color(media_pb);
       
       //Adiciona nível de escala de cinza utilizando técnica cross fade
-      r = red(imagens[imagem_index].pixels[pos]) * (1 - _pb) + red(imagem_aux.pixels[pos]) * _pb ;
-      g = green(imagens[imagem_index].pixels[pos]) * (1 - _pb) + green(imagem_aux.pixels[pos]) * _pb ;
-      b = blue(imagens[imagem_index].pixels[pos]) * (1 - _pb) + blue(imagem_aux.pixels[pos]) * _pb ;
-      imagem_final.pixels[pos] = color(r, g, b);
-      
-      //Adiciona nível vermelho e verde
-      r = red(imagem_final.pixels[pos]);
-      g = green(imagem_final.pixels[pos]);
-      b = blue(imagem_final.pixels[pos]);
+      r = red(imagem_aux1.pixels[pos]) * (1 - _pb) + red(imagem_aux2.pixels[pos]) * _pb ;
+      g = green(imagem_aux1.pixels[pos]) * (1 - _pb) + green(imagem_aux2.pixels[pos]) * _pb ;
+      b = blue(imagem_aux1.pixels[pos]) * (1 - _pb) + blue(imagem_aux2.pixels[pos]) * _pb ;
+      //Atualiza pixels da imagem final considerando modificações das cores vermelho e verde
       imagem_final.pixels[pos] = color(r + (255 * _vermelho), g + (255 * _verde), b);
-    
     }
   }
-  imagem_aux.updatePixels();
   imagem_final.updatePixels();
 }
 
