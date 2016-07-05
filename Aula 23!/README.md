@@ -1,0 +1,1 @@
+valiar a palestra “The Beauty of Data Visualization”, David McCandless em www.ted.com

@@ -1,0 +1,1 @@
+Desconsiderando os exercícios já apresentados na disciplina, exemplificar e discutir como a teoria dos conjuntos pode ser aplicada no desenvolvimento de aplicações multimídia

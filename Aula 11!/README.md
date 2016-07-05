@@ -1,0 +1,1 @@
+Apresentar um menu inicial com título (que leva ao jogo quando a barra de espaços é pressionada) e permitir que o disco voador faça até três disparos (quantidade restante indicada na tela)
