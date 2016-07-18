@@ -1,0 +1,1 @@
+Incluir os principais elementos presentes em um gráfico comercial (rótulos de dados e títulos, rótulos, linhas de grade e escalas de eixos) e discutir a importância dos mesmos.

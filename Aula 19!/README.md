@@ -1,0 +1,1 @@
+Discutir a implementação de uma das transições apresentadas em http://www.youtube.com/watch?v=6n7GoNmgHGI (NewTek Video Toaster 4000 Demo)

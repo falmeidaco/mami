@@ -1,0 +1,1 @@
+Crie versões no Photoshop da imagem de einstein.jpg e cinza.jpg com variações de brilho e contraste. Qual impacto ocorreu na média e desvio padrão?
